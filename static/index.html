@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn Đề Nghị Xét, Cấp Miễn Học Phí Thạc Sĩ — DUE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/app.css">
+    <style>
+        /* Custom Styles cho Bảng Tiêu chí & Single PDF Upload */
+        .thanh-buoc-dinh {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #ffffff;
+            padding: 12px 16px;
+            margin: -24px -24px 24px -24px;
+            border-bottom: 1px solid var(--xam-nhot, #e2e8f0);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border-radius: 16px 16px 0 0;
+        }
+        .danh-sach-buoc-dinh {
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nut-buoc-dinh {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .nut-buoc-dinh:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+        .nut-buoc-dinh.active {
+            background: var(--xanh, #0284c7);
+            border-color: var(--xanh, #0284c7);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+        }
+        .nut-buoc-dinh__so {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .nut-buoc-dinh.active .nut-buoc-dinh__so {
+            background: rgba(255,255,255,0.25);
+            color: #ffffff;
+        }
+        @media (max-width: 640px) {
+            .thanh-buoc-dinh { margin: -16px -16px 16px -16px; }
+            .nut-buoc-dinh__ten { display: none; }
+            .nut-buoc-dinh { padding: 8px; }
+        }
+
+        .khoi-buoc {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            scroll-margin-top: 80px;
+        }
+        .tieu-de-buoc {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--xanh-nhot, #e0f2fe);
+        }
+        .tieu-de-buoc__hieu {
+            background: var(--xanh, #0284c7);
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .tieu-de-buoc__ten {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--xanh, #0284c7);
+            margin: 0;
+        }
+
+        /* Bảng tự đánh giá thành tích */
+        .bang-danh-gia {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .bang-danh-gia th, .bang-danh-gia td {
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            font-size: 13.5px;
+            vertical-align: middle;
+        }
+        .bang-danh-gia th {
+            background: #f1f5f9;
+            color: #1e293b;
+            font-weight: 700;
+            text-align: left;
+        }
+        .bang-danh-gia tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .nhom-nut-chon-bang {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .nhan-tuy-chon {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .nhan-tuy-chon:hover {
+            border-color: #0284c7;
+            background: #f0f9ff;
+        }
+        .nhan-tuy-chon input[type="radio"],
+        .nhan-tuy-chon input[type="checkbox"] {
+            accent-color: #0284c7;
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Styling cho Khung Upload PDF Gộp ở Bước 4 */
+        .the-upload--gop-pdf {
+            border: 2px dashed #0284c7;
+            background: #f0f9ff;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .the-upload--gop-pdf .the-upload__bieutong {
+            width: 56px;
+            height: 56px;
+            background: #0284c7;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 800;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header DUE -->
+    <header class="dau-trang">
+        <div class="dau-trang__trong">
+            <div class="dau-trang__logo">
+                <img src="/static/assets/due-logo-khien.png" alt="DUE Logo">
+            </div>
+            <div class="dau-trang__tieu-de">
+                <div class="dau-trang__phu">Đại học Đà Nẵng</div>
+                <div class="dau-trang__ten">Trường Đại học Kinh tế</div>
+            </div>
+            <a href="/admin" class="dau-trang__nut-phu">Cổng Admin</a>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="noi-dung">
+        <div class="the" id="khungApp">
+
+            <!-- Title Header từ Thông báo chính thức số /TB-ĐHKT năm 2026 -->
+            <div class="nhom" style="gap: 6px; margin-bottom: 20px; text-align: center;">
+                <h1 style="font-size: 19px; text-transform: uppercase; line-height: 1.4; color: var(--xanh, #0284c7);">Đơn đề nghị xét, cấp miễn học phí<br>“Chương trình phát triển nhà nghiên cứu trẻ” cho học viên</h1>
+                <p class="mo-ta" style="font-style: italic; font-size: 13.5px; color: #475569;">(Dành cho học viên khóa K50 trúng tuyển Đợt 4 lần 2 năm 2025, Đợt 1 và Đợt 2 lần 1 năm 2026 — Đào tạo thạc sĩ Hệ chính quy định hướng nghiên cứu)</p>
+                
+                <div class="hop hop--xanh" style="margin-top: 10px; text-align: left; background: #f0f9ff; border: 1px solid #bae6fd;">
+                    <span class="hop__dau" style="background: #0284c7; color: white;">📌</span>
+                    <span style="font-size: 13px; color: #0369a1;"><strong>Lưu ý nộp hồ sơ giấy đối chiếu:</strong> Học viên sau khi kê khai trực tuyến vui lòng nộp hồ sơ giấy tại <strong>Phòng Công tác Sinh viên (P.CTSV)</strong> vào thời gian: <strong>07h30-10h30, 14h00-16h30 Ngày 10-11/09/2026</strong>.</span>
+                </div>
+            </div>
+
+            <!-- Sticky Step Navigation Bar -->
+            <div class="thanh-buoc-dinh" id="stickyStepBar">
+                <div class="danh-sach-buoc-dinh">
+                    <a href="#step-1" class="nut-buoc-dinh active" data-step-target="step-1">
+                        <span class="nut-buoc-dinh__so">1</span>
+                        <span class="nut-buoc-dinh__ten">Thông tin cá nhân</span>
+                    </a>
+                    <a href="#step-2" class="nut-buoc-dinh" data-step-target="step-2">
+                        <span class="nut-buoc-dinh__so">2</span>
+                        <span class="nut-buoc-dinh__ten">Loại học bổng</span>
+                    </a>
+                    <a href="#step-3" class="nut-buoc-dinh" data-step-target="step-3">
+                        <span class="nut-buoc-dinh__so">3</span>
+                        <span class="nut-buoc-dinh__ten">Tự đánh giá</span>
+                    </a>
+                    <a href="#step-4" class="nut-buoc-dinh" data-step-target="step-4">
+                        <span class="nut-buoc-dinh__so">4</span>
+                        <span class="nut-buoc-dinh__ten">Minh chứng & Cam kết</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Form Wrapper (Single Page - 4 Steps Scroll View) -->
+            <form id="scholarshipForm" enctype="multipart/form-data" novalidate>
+                
+                <!-- BƯỚC 1: THÔNG TIN CÁ NHÂN -->
+                <div class="khoi-buoc" id="step-1">
+                    <div class="tieu-de-buoc">
+                        <span class="tieu-de-buoc__hieu">Bước 1</span>
+                        <h2 class="tieu-de-buoc__ten">I. Thông tin cá nhân học viên</h2>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="o">
+                            <label for="fullname">Họ và tên <span class="bat-buoc">*</span></label>
+                            <input type="text" id="fullname" name="fullname" placeholder="NGUYỄN VĂN A" required>
+                        </div>
+                        <div class="o">
+                            <label for="gender">Giới tính <span class="bat-buoc">*</span></label>
+                            <select id="gender" name="gender" required>
+                                <option value="" disabled selected>Chọn giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="o">
+                            <label for="dob">Ngày sinh <span class="bat-buoc">*</span></label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                        <div class="o">
+                            <label for="pob">Nơi sinh (Tỉnh/Thành phố) <span class="bat-buoc">*</span></label>
+                            <input type="text" id="pob" name="pob" placeholder="Ví dụ: Đà Nẵng" required>
+                        </div>
+                        <div class="o">
+                            <label for="student_class">Lớp học Thạc sĩ <span class="bat-buoc">*</span></label>
+                            <input type="text" id="student_class" name="student_class" placeholder="Ví dụ: Cao học QTKD K50.1" required>
+                        </div>
+                        <div class="o">
+                            <label for="student_cohort">Khóa tuyển sinh <span class="bat-buoc">*</span></label>
+                            <input type="text" id="student_cohort" name="student_cohort" placeholder="K50" required>
+                        </div>
+                        <div class="o">
+                            <label for="student_id">Mã số học viên (nếu có)</label>
+                            <input type="text" id="student_id" name="student_id" placeholder="Mã HV hoặc để trống">
+                        </div>
+                        <div class="o">
+                            <label for="citizen_id">Số CCCD <span class="bat-buoc">*</span></label>
+                            <input type="text" id="citizen_id" name="citizen_id" placeholder="048xxxxxxxxx" maxlength="12" required>
+                        </div>
+                        <div class="o">
+                            <label for="phone">Số điện thoại liên hệ <span class="bat-buoc">*</span></label>
+                            <input type="tel" id="phone" name="phone" placeholder="0905xxxxxx" maxlength="11" required>
+                        </div>
+                        <div class="o">
+                            <label for="email">Địa chỉ Email <span class="bat-buoc">*</span></label>
+                            <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+                        </div>
+                        <div class="o">
+                            <label for="graduated_uni">Trường Đại học đã tốt nghiệp <span class="bat-buoc">*</span></label>
+                            <input type="text" id="graduated_uni" name="graduated_uni" placeholder="Trường ĐH Kinh tế - ĐHĐN" required>
+                        </div>
+                        <div class="o">
+                            <label for="major">Ngành tốt nghiệp Đại học <span class="bat-buoc">*</span></label>
+                            <input type="text" id="major" name="major" placeholder="Quản trị kinh doanh" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 2: LOẠI HỌC BỔNG ĐĂNG KÝ (CẤU TRÚC MỚI THEO 4 MỨC MIỄN) -->
+                <div class="khoi-buoc" id="step-2">
+                    <div class="tieu-de-buoc">
+                        <span class="tieu-de-buoc__hieu">Bước 2</span>
+                        <h2 class="tieu-de-buoc__ten">II. Đối tượng xét miễn học phí <span class="bat-buoc">*</span></h2>
+                    </div>
+
+                    <div class="hop hop--xanh" style="margin-bottom: 16px;">
+                        <span class="hop__dau">i</span>
+                        <span>Học viên có thể tích chọn <strong>01 hoặc nhiều tiêu chuẩn</strong> phù hợp với điều kiện của mình dưới đây:</span>
+                    </div>
+
+                    <!-- 2.1. Miễn 100% học phí toàn khóa -->
+                    <div class="muc-mien-box" style="margin-bottom: 20px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #0284c7; margin-bottom: 10px; background: #e0f2fe; padding: 8px 12px; border-radius: 6px;">
+                            2.1. Miễn 100% học phí toàn khóa
+                        </h3>
+                        <div class="nhom-tuy-chon-mien" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 100% học phí toàn khóa" value="2.1.1. Tốt nghiệp Xuất sắc + Thủ khoa chuyên ngành & Khóa luận/NCKH cấp Khoa trở lên" id="opt_100_1">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_100_1" class="the-chon__tieude"><strong>2.1.1.</strong> Tốt nghiệp Xuất sắc + Thủ khoa chuyên ngành + Khóa luận/báo cáo NCKH cấp Khoa trở lên</label>
+                                    <span class="the-chon__mota">Tốt nghiệp đại học loại Xuất sắc với thành tích Thủ khoa chuyên ngành và có thực hiện khóa luận tốt nghiệp hoặc có báo cáo tại Hội nghị/Cuộc thi SV NCKH từ cấp Khoa trở lên.</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 100% học phí toàn khóa" value="2.1.2. Tốt nghiệp Giỏi trở lên & Giải NCKH cấp Bộ/Tỉnh" id="opt_100_2">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_100_2" class="the-chon__tieude"><strong>2.1.2.</strong> Tốt nghiệp Giỏi trở lên + Đạt giải NCKH cấp Bộ (KH&CN SV, Euréka, Olympic KTL) hoặc cấp Tỉnh/TP</label>
+                                    <span class="the-chon__mota">Tốt nghiệp đại học loại Giỏi trở lên và đạt giải trong cuộc thi, giải thưởng NCKH cấp Bộ hoặc tương đương dành cho SV (Giải thưởng KH&CN SV, Euréka, Olympic Kinh tế lượng & Ứng dụng) hoặc cấp Tỉnh/Thành phố trực thuộc TW.</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 100% học phí toàn khóa" value="2.1.3. Tốt nghiệp Giỏi trở lên & Tác giả bài báo WoS/Scopus" id="opt_100_3">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_100_3" class="the-chon__tieude"><strong>2.1.3.</strong> Tốt nghiệp Giỏi trở lên + Tác giả chính (đứng đầu/liên hệ) bài báo WoS/Scopus</label>
+                                    <span class="the-chon__mota">Tốt nghiệp đại học loại Giỏi trở lên và là tác giả đứng tên đầu hoặc tác giả liên hệ của bài báo trong danh mục WoS/Scopus.</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 100% học phí toàn khóa" value="2.1.4. SV 48K tốt nghiệp Xuất sắc đợt 1/2026 & Vinh danh Lễ trao bằng" id="opt_100_4">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_100_4" class="the-chon__tieude"><strong>2.1.4.</strong> SV khóa 48K tốt nghiệp loại Xuất sắc đợt 1/2026 + Được vinh danh Lễ trao bằng</label>
+                                    <span class="the-chon__mota">SV khóa 48K tốt nghiệp đại học loại Xuất sắc trong đợt 1 năm 2026 và được vinh danh, tặng giấy khen trong Lễ trao bằng tốt nghiệp vì thành tích học tập (không yêu cầu ngoại ngữ nếu nộp hồ sơ trước 30/06/2026).</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 100% học phí toàn khóa" value="2.1.5. SV 48K tốt nghiệp Xuất sắc đợt 1/2026 & Khóa luận/NCKH cấp Khoa" id="opt_100_5">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_100_5" class="the-chon__tieude"><strong>2.1.5.</strong> SV khóa 48K tốt nghiệp loại Xuất sắc đợt 1/2026 + Khóa luận/Đề tài NCKH cấp Khoa trở lên</label>
+                                    <span class="the-chon__mota">SV khóa 48K tốt nghiệp đại học loại Xuất sắc trong đợt 1 năm 2026 và có thực hiện Khóa luận tốt nghiệp hoặc Đề tài NCKH cấp Khoa trở lên (không yêu cầu ngoại ngữ nếu nộp hồ sơ trước 30/06/2026).</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.2. Miễn 75% học phí toàn khóa -->
+                    <div class="muc-mien-box" style="margin-bottom: 20px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #0284c7; margin-bottom: 10px; background: #e0f2fe; padding: 8px 12px; border-radius: 6px;">
+                            2.2. Miễn 75% học phí toàn khóa
+                        </h3>
+                        <div class="nhom-tuy-chon-mien" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 75% học phí toàn khóa" value="2.2.1. Tốt nghiệp Xuất sắc & Khoa giới thiệu phát triển Giảng viên" id="opt_75_1">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_75_1" class="the-chon__tieude"><strong>2.2.1.</strong> Tốt nghiệp Xuất sắc + Được các Khoa trong Trường ĐHKT giới thiệu PTGV</label>
+                                    <span class="the-chon__mota">Tốt nghiệp đại học loại Xuất sắc và được các Khoa trong Trường ĐHKT giới thiệu tham gia chương trình phát triển giảng viên.</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 75% học phí toàn khóa" value="2.2.2. Tốt nghiệp Giỏi trở lên & Giải NCKH cấp ĐHĐN" id="opt_75_2">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_75_2" class="the-chon__tieude"><strong>2.2.2.</strong> Tốt nghiệp Giỏi trở lên + Đạt giải Cuộc thi SV NCKH cấp Đại học Đà Nẵng</label>
+                                    <span class="the-chon__mota">Tốt nghiệp đại học loại Giỏi trở lên và đạt giải trong Cuộc thi SV NCKH cấp Đại học Đà Nẵng hoặc tương đương.</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 75% học phí toàn khóa" value="2.2.3. SV 48K tốt nghiệp đợt 1/2026 loại Xuất sắc" id="opt_75_3">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_75_3" class="the-chon__tieude"><strong>2.2.3.</strong> SV khóa 48K tốt nghiệp đại học đợt 1 năm 2026 loại Xuất sắc</label>
+                                    <span class="the-chon__mota">SV khóa 48K tốt nghiệp đại học đợt 1 năm 2026 loại Xuất sắc (không yêu cầu ngoại ngữ nếu nộp hồ sơ tuyển sinh trước ngày 30/06/2026).</span>
+                                </div>
+                            </div>
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 75% học phí toàn khóa" value="2.2.4. SV 48K tốt nghiệp đợt 1/2026 loại Giỏi & Khóa luận/NCKH cấp Khoa" id="opt_75_4">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_75_4" class="the-chon__tieude"><strong>2.2.4.</strong> SV khóa 48K tốt nghiệp đợt 1/2026 loại Giỏi + Khóa luận/Đề tài NCKH cấp Khoa trở lên</label>
+                                    <span class="the-chon__mota">SV khóa 48K tốt nghiệp đại học đợt 1 năm 2026 loại Giỏi và có thực hiện Khóa luận tốt nghiệp hoặc Đề tài NCKH cấp Khoa trở lên (không yêu cầu ngoại ngữ nếu nộp trước 30/06/2026).</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.3. Miễn 50% học phí toàn khóa -->
+                    <div class="muc-mien-box" style="margin-bottom: 20px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #0284c7; margin-bottom: 10px; background: #e0f2fe; padding: 8px 12px; border-radius: 6px;">
+                            2.3. Miễn 50% học phí toàn khóa
+                        </h3>
+                        <div class="nhom-tuy-chon-mien" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn 50% học phí toàn khóa" value="2.3.1. Tốt nghiệp Giỏi trở lên & Giải NCKH cấp Trường ĐHKT" id="opt_50_1">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_50_1" class="the-chon__tieude"><strong>2.3.1.</strong> Tốt nghiệp Giỏi trở lên + Đạt giải trong cuộc thi SV NCKH cấp Trường ĐHKT</label>
+                                    <span class="the-chon__mota">Tốt nghiệp đại học loại Giỏi trở lên và đạt giải trong cuộc thi SV NCKH cấp Trường.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.4. Miễn 25% học phí toàn khóa -->
+                    <div class="muc-mien-box" style="margin-bottom: 20px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #0284c7; margin-bottom: 10px; background: #e0f2fe; padding: 8px 12px; border-radius: 6px;">
+                            2.4. Miễn tối đa 25% học phí toàn khóa
+                        </h3>
+                        <div class="nhom-tuy-chon-mien" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="the-chon">
+                                <input type="checkbox" name="scholarship_option" data-group="Miễn tối đa 25% học phí" value="2.4.1. Cựu SV ĐHKT loại Khá trong 2 năm & Tích lũy tín chỉ CN-TS" id="opt_25_1">
+                                <div class="the-chon__noidung">
+                                    <label for="opt_25_1" class="the-chon__tieude"><strong>2.4.1.</strong> Cựu SV ĐHKT tốt nghiệp loại Khá trở lên trong 2 năm + Tích lũy tín chỉ Chương trình tích hợp Cử nhân - Thạc sĩ</label>
+                                    <span class="the-chon__mota">Cựu sinh viên của Trường ĐHKT tốt nghiệp đại học từ loại Khá trở lên trong thời hạn 02 năm (tính từ ngày ký bằng tốt nghiệp đến thời điểm thông báo tuyển sinh) và có tích lũy một số tín chỉ trong Chương trình tích hợp Cử nhân - Thạc sĩ (Không yêu cầu ngoại ngữ).</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="scholarship_group" name="scholarship_group">
+                </div>
+
+                <!-- BƯỚC 3: TỰ ĐÁNH GIÁ THÀNH TÍCH DẠNG BẢNG ĐẦY ĐỦ -->
+                <div class="khoi-buoc" id="step-3">
+                    <div class="tieu-de-buoc">
+                        <span class="tieu-de-buoc__hieu">Bước 3</span>
+                        <h2 class="tieu-de-buoc__ten">III. Tự đánh giá thành tích, điều kiện</h2>
+                    </div>
+
+                    <p class="mo-ta">Học viên đánh dấu chọn vào <strong>TẤT CẢ</strong> các mục mình đáp ứng theo đúng cấu trúc bảng:</p>
+
+                    <table class="bang-danh-gia">
+                        <thead>
+                            <tr>
+                                <th style="width: 45%;">Tiêu chí tự đánh giá</th>
+                                <th style="width: 55%;">Lựa chọn của học viên</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 1. Xếp loại tốt nghiệp -->
+                            <tr>
+                                <td><strong>1. Xếp loại tốt nghiệp đại học</strong></td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_grade" value="Xuất sắc"> Xuất sắc</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_grade" value="Giỏi"> Giỏi</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_grade" value="Khá"> Khá</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 2. Vinh danh khen thưởng -->
+                            <tr>
+                                <td><strong>2. Vinh danh, tặng giấy khen Lễ trao bằng tốt nghiệp</strong> vì thành tích học tập tại ĐHKT - ĐHĐN</td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_award" value="Có"> Có</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_award" value="Không" checked> Không</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 3. Thủ khoa -->
+                            <tr>
+                                <td><strong>3. Thủ khoa chuyên ngành</strong> tốt nghiệp ĐH tại ĐHKT - ĐHĐN</td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_valedictorian" value="Có"> Có</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_valedictorian" value="Không" checked> Không</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 4. Khóa luận -->
+                            <tr>
+                                <td><strong>4. Thực hiện Khóa luận tốt nghiệp đại học</strong></td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_thesis" value="Có"> Có</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_thesis" value="Không" checked> Không</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 5. Đề tài NCKH -->
+                            <tr>
+                                <td>
+                                    <strong>5. Đề tài NCKH có thực hiện (cấp cao nhất)</strong><br>
+                                    <span style="font-size: 12px; color: #64748b;">(Ghi rõ tên đề tài, năm thực hiện ở ô Ghi chú)</span>
+                                </td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_level" value="Cấp Khoa"> Cấp Khoa</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_level" value="Cấp Trường"> Cấp Trường</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_level" value="Cấp Đại học Đà Nẵng"> Cấp ĐHĐN</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_level" value="Cấp Bộ hoặc tương đương"> Cấp Bộ</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_level" value="Không có" checked> Không có</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 6. Giải NCKH -->
+                            <tr>
+                                <td>
+                                    <strong>6. Đạt giải thưởng / cuộc thi SV NCKH (cấp cao nhất)</strong><br>
+                                    <span style="font-size: 12px; color: #64748b;">(Ghi rõ tên giải, năm đạt ở ô Ghi chú)</span>
+                                </td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Cấp Trường"> Cấp Trường</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Cấp Đại học Đà Nẵng"> Cấp ĐHĐN</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Cấp Bộ - Giải KH&CN SV"> Giải KH&CN SV</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Cấp Bộ - Euréka"> Giải Euréka</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Cấp Bộ - Olympic Kinh tế lượng"> Olympic KTL</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Cấp Tỉnh/Thành phố"> Cấp Tỉnh/TP</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="self_eval_nckh_prize" value="Không có" checked> Không có</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 7. Bài báo WoS/Scopus -->
+                            <tr>
+                                <td><strong>7. Tác giả chính (đứng đầu/liên hệ) bài báo WoS/Scopus</strong></td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_scopus" value="Có"> Có</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_scopus" value="Không" checked> Không</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 8. PTGV -->
+                            <tr>
+                                <td><strong>8. Được Khoa giới thiệu tham gia chương trình phát triển Giảng viên</strong></td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_lecturer" value="Có"> Có</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_lecturer" value="Không" checked> Không</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 9. Tiếng Anh -->
+                            <tr>
+                                <td><strong>9. Chứng chỉ tiếng Anh (Tối thiểu Bậc 4/6 hoặc B2)</strong></td>
+                                <td>
+                                    <div class="nhom-nut-chon-bang" style="margin-bottom: 8px;">
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_english_opt" id="eval_english_yes" value="Có"> Có chứng chỉ</label>
+                                        <label class="nhan-tuy-chon"><input type="radio" name="eval_english_opt" id="eval_english_no" value="Chưa có" checked> Chưa có</label>
+                                    </div>
+                                    <div id="english_details_panel" style="display: none; gap: 8px; flex-direction: column;">
+                                        <input type="text" id="english_type" placeholder="Loại chứng chỉ (VSTEP, IELTS...)" style="padding: 6px 10px; font-size: 13px;">
+                                        <input type="text" id="english_score" placeholder="Điểm số / Bậc (6.5 / Bậc 4)" style="padding: 6px 10px; font-size: 13px;">
+                                    </div>
+                                    <input type="hidden" id="self_eval_english_details" name="self_eval_english_details">
+                                    <input type="checkbox" id="self_eval_english" name="self_eval_english" style="display:none;">
+                                </td>
+                            </tr>
+                            <!-- 10. Tích lũy Cử nhân - Thạc sĩ -->
+                            <tr>
+                                <td colspan="2">
+                                    <strong>10. Học viên đã tích luỹ được bao nhiêu tín chỉ trong Chương trình tích hợp Cử nhân - Thạc sĩ?</strong><br>
+                                    <span style="font-size: 12.5px; color: #64748b;">(Chỉ học viên đăng ký mức miễn 25% trả lời: Được miễn bao nhiêu tín chỉ và đó là những môn học nào?)</span><br>
+                                    <textarea id="self_eval_integrated_credits" name="self_eval_integrated_credits" rows="4" placeholder="Ghi rõ số tín chỉ và tên các môn học đã tích lũy..." style="width: 100%; box-sizing: border-box; min-height: 100px; padding: 10px 12px; font-size: 14px; line-height: 1.5; border-radius: 6px; border: 1px solid #cbd5e1; margin-top: 8px; font-family: inherit; resize: vertical;"></textarea>
+                                </td>
+                            </tr>
+                            <!-- Ghi chú chi tiết thành tích -->
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Ghi chú thành tích NCKH & Công trình công bố:</strong><br>
+                                    <textarea id="notes" name="notes" rows="4" placeholder="Liệt kê giải thưởng NCKH cao nhất, bài báo: ghi rõ tên giải thưởng, giải mấy, năm nhận và tên đề tài/công trình đạt giải (nếu có)..." style="width: 100%; box-sizing: border-box; min-height: 100px; padding: 10px 12px; font-size: 14px; line-height: 1.5; border-radius: 6px; border: 1px solid #cbd5e1; margin-top: 8px; font-family: inherit; resize: vertical;"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Hidden fields map -->
+                    <input type="hidden" id="graduation_grade" name="graduation_grade">
+                    <input type="checkbox" id="self_eval_gpa" name="self_eval_gpa" style="display:none;">
+                    <input type="checkbox" id="self_eval_award" name="self_eval_award" style="display:none;">
+                    <input type="checkbox" id="self_eval_valedictorian" name="self_eval_valedictorian" style="display:none;">
+                    <input type="checkbox" id="self_eval_thesis" name="self_eval_thesis" style="display:none;">
+                    <input type="checkbox" id="self_eval_scopus" name="self_eval_scopus" style="display:none;">
+                    <input type="checkbox" id="self_eval_lecturer_program" name="self_eval_lecturer_program" style="display:none;">
+                </div>
+
+                <!-- BƯỚC 4: TÀI LIỆU MINH CHỨNG (01 FILE PDF GỘP DUY NHẤT) & V. CAM KẾT -->
+                <div class="khoi-buoc" id="step-4">
+                    <div class="tieu-de-buoc">
+                        <span class="tieu-de-buoc__hieu">Bước 4</span>
+                        <h2 class="tieu-de-buoc__ten">IV. Minh chứng kèm theo</h2>
+                    </div>
+
+                    <div class="hop hop--xanh" style="margin-bottom: 16px;">
+                        <span class="hop__dau">i</span>
+                        <span>Yêu cầu học viên gộp toàn bộ Bằng tốt nghiệp/Bảng điểm, Minh chứng NCKH, Thủ khoa, Tiếng Anh... thành <strong>01 FILE PDF DUY NHẤT</strong> để tải lên hệ thống.</span>
+                    </div>
+
+                    <!-- Single Merged PDF Upload Box -->
+                    <div class="the-upload--gop-pdf" id="card_file_degree">
+                        <div class="the-upload__bieutong">PDF</div>
+                        <div style="text-align: center;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">Tải lên File Hồ sơ Minh chứng Tổng hợp (PDF) <span class="bat-buoc">*</span></h3>
+                            <p style="font-size: 13px; color: #64748b; margin: 0;">Gộp tất cả văn bằng, bảng điểm, chứng nhận thành tích và tiếng Anh vào 1 file PDF (Dung lượng tối đa 20MB)</p>
+                            <div class="filename-display" style="margin-top: 8px; font-weight: 600; color: #0284c7;"></div>
+                        </div>
+
+                        <div style="margin-top: 6px;">
+                            <label for="file_degree" class="nut nut--chinh" style="padding: 10px 20px; font-size: 14px; cursor: pointer;">
+                                📁 Chọn file PDF gộp hồ sơ
+                            </label>
+                            <input type="file" name="file_degree" id="file_degree" accept=".pdf" style="display: none;" required>
+                        </div>
+                        <div class="thanh-tien-trinh-upload" style="width: 100%; display: none;"><div class="ruot-tien-trinh-upload" style="height: 6px; background: #0284c7; width: 0%;"></div></div>
+                    </div>
+
+                    <!-- Cam kết danh dự -->
+                    <div class="nhom" style="margin-top: 24px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">V. Cam kết danh dự <span class="bat-buoc">*</span></h3>
+                        <div class="dong-tieu-chi" id="chk_commitment_card" style="align-items: flex-start; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            <input type="checkbox" id="commitment" name="commitment" style="margin-top: 3px;" required>
+                            <label for="commitment" style="font-size: 13.5px; line-height: 1.5; font-weight: 500;">
+                                Tôi xin cam đoan những thông tin nêu trên là đúng sự thật. Nếu có sai sót, tôi xin hoàn toàn chịu trách nhiệm và chấp nhận việc thu hồi nguồn ngân sách (nếu đã được cấp) theo quy định của Nhà trường.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Notice Box -->
+                <div class="hop hop--loi" id="loiForm" style="display: none; margin-top: 24px;">
+                    <span class="hop__dau">!</span>
+                    <span id="loiFormNoiDung"></span>
+                </div>
+
+                <!-- Action Submit Button -->
+                <div style="margin-top: 24px;">
+                    <button type="submit" class="nut nut--chinh" id="submitBtn" style="width: 100%; padding: 16px 24px; font-size: 16px; font-weight: 700; border-radius: 10px;">
+                        Nộp đơn đề nghị xét miễn học phí
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Screen -->
+            <div class="ket-qua" id="successCard" style="display: none;">
+                <span class="ket-qua__dau">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>
+                </span>
+                <h2>Đã ghi nhận đơn đề nghị</h2>
+                <div class="ket-qua__chi-tiet">
+                    <span>Đơn đề nghị xét, cấp miễn học phí Thạc sĩ của bạn đã được gửi thành công đến Phòng Công tác Sinh viên.</span>
+                    <span>Hệ thống sẽ tiến hành kiểm tra, đối chiếu dữ liệu minh chứng của bạn. Cảm ơn bạn!</span>
+                </div>
+                <button type="button" class="nut nut--chinh" id="reloadBtn" style="margin-top: 10px;">Nộp đơn mới</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer DUE -->
+    <footer class="chan-trang">
+        <p>Phòng Công tác Sinh viên · Trường Đại học Kinh tế, Đại học Đà Nẵng</p>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

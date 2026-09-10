@@ -1,0 +1,8 @@
+*.db
+*.sqlite
+*.xlsx
+uploads/
+tat_ca_minh_chung.zip
+__pycache__/
+*.pyc
+.env

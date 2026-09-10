@@ -1,0 +1,1003 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* Ngôn ngữ thiết kế DUE - Trường Đại học Kinh tế, ĐH Đà Nẵng */
+:root {
+  --nen: #F7F4EF;
+  --the: #FFFFFF;
+  --muc: #14213A;
+  --phu: #4A5468;
+  --chu-thich: #5E6778;
+  --mo: #7A7364;
+  --vien: #E5E0D8;
+  --vien-o: #DCD6CB;
+  --tat: #EDE9E1;
+  --chu-tat: #A9A296;
+
+  --xanh: #005EA3;
+  --xanh-dam: #004370;
+  --xanh-nhat: #EAF2F9;
+  --xanh-vien: #C3D9EA;
+
+  --cam: #C4531A;
+  --cam-dam: #A8410F;
+  --cam-nhat: #FDF0E9;
+  --cam-vach: #EE6323;
+
+  --la: #058E47;
+  --la-dam: #046B36;
+  --la-nhat: #EAF5EE;
+  --la-vien: #BEDFCB;
+  --la-chu: #2F6B4A;
+
+  --loi: #C4442E;
+  --loi-nhat: #FBEEEA;
+  --loi-chu: #8C3320;
+
+  --bo: 12px;
+  --bo-the: 16px;
+  --pill: 999px;
+  --nut-cao: 48px;
+  --bong-nhe: 0 4px 18px rgba(20, 33, 58, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--nen);
+  color: var(--muc);
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.25;
+  color: var(--muc);
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--muc);
+}
+
+a {
+  color: var(--xanh);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   ĐẦU TRANG (HEADER - DUE STYLE)
+   ========================================================================== */
+.dau-trang {
+  background: var(--xanh);
+  color: #ffffff;
+  padding: 14px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dau-trang__trong {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dau-trang__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--bo);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.dau-trang__logo img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+.dau-trang__tieu-de {
+  display: flex;
+  flex-direction: column;
+}
+
+.dau-trang__phu {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.dau-trang__ten {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dau-trang__nut-phu {
+  margin-left: auto;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 14px;
+  border-radius: var(--pill);
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.dau-trang__nut-phu:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ==========================================================================
+   BỐ CỤC NỘI DUNG (MAIN CONTENT LAYOUT)
+   ========================================================================== */
+.noi-dung {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.the {
+  background: var(--the);
+  border: 1px solid var(--vien);
+  border-radius: var(--bo-the);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: var(--bong-nhe);
+}
+
+@media (min-width: 640px) {
+  .the {
+    padding: 32px;
+  }
+  h1 {
+    font-size: 26px;
+  }
+}
+
+.mo-ta {
+  color: var(--phu);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.nhom {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   THANH TIẾN TRÌNH (STEP WIZARD PROGRESS)
+   ========================================================================== */
+.tien-trinh {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--vien);
+}
+
+.tien-trinh__dong {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.tien-trinh__buoc {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--xanh);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.tien-trinh__ten {
+  font-size: 13px;
+  color: var(--chu-thich);
+  font-weight: 500;
+}
+
+.tien-trinh__thanh {
+  height: 7px;
+  border-radius: var(--pill);
+  background: var(--tat);
+  overflow: hidden;
+}
+
+.tien-trinh__day {
+  height: 100%;
+  background: var(--cam-vach);
+  border-radius: var(--pill);
+  transition: width .35s ease;
+}
+
+/* ==========================================================================
+   FORM INPUTS & CONTROLS
+   ========================================================================== */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.o {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.o.full-width {
+  grid-column: span 2;
+}
+
+@media (max-width: 640px) {
+  .o.full-width {
+    grid-column: span 1;
+  }
+}
+
+.o label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muc);
+}
+
+.o .bat-buoc {
+  color: var(--cam);
+  font-weight: 700;
+}
+
+.o input[type="text"],
+.o input[type="email"],
+.o input[type="tel"],
+.o input[type="date"],
+.o select,
+.o textarea {
+  height: var(--nut-cao);
+  border: 1px solid var(--vien-o);
+  border-radius: var(--bo);
+  background: #ffffff;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--muc);
+  width: 100%;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.o textarea {
+  height: auto;
+  min-height: 96px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.o input:focus,
+.o select:focus,
+.o textarea:focus {
+  border-color: var(--xanh);
+  box-shadow: 0 0 0 3px rgba(0, 94, 163, .14);
+}
+
+.o input[aria-invalid="true"],
+.o select[aria-invalid="true"] {
+  border-color: var(--loi);
+  background-color: var(--loi-nhat);
+}
+
+.goi-y {
+  font-size: 12.5px;
+  color: var(--chu-thich);
+}
+
+/* ==========================================================================
+   SELECTION CARDS (NHÓM HỌC BỔNG & OPTION CARDS)
+   ========================================================================== */
+.nhom-the-chon {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.the-chon {
+  background: #ffffff;
+  border: 1.5px solid var(--vien);
+  border-radius: var(--bo);
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+
+.the-chon:hover {
+  border-color: var(--xanh-vien);
+  background: var(--xanh-nhat);
+}
+
+.the-chon.chon {
+  border-color: var(--xanh);
+  background: var(--xanh-nhat);
+}
+
+.the-chon input[type="radio"],
+.the-chon input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--xanh);
+  flex: none;
+  cursor: pointer;
+}
+
+.the-chon__noidung {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.the-chon__tieude {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muc);
+}
+
+.the-chon__mota {
+  font-size: 13px;
+  color: var(--phu);
+  line-height: 1.5;
+}
+
+.khung-tuy-chon-con {
+  margin-left: 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--xanh-vien);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   CHECKLIST ITEMS (TỰ ĐÁNH GIÁ THÀNH TÍCH)
+   ========================================================================== */
+.danh-sach-tieu-chi {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dong-tieu-chi {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid var(--vien-o);
+  border-radius: var(--bo);
+  cursor: pointer;
+  transition: border-color .15s ease;
+}
+
+.dong-tieu-chi:hover {
+  border-color: var(--xanh-vien);
+}
+
+.dong-tieu-chi.da-chon {
+  border-color: var(--la-vien);
+  background: var(--la-nhat);
+}
+
+.dong-tieu-chi input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--la);
+  flex: none;
+}
+
+.dong-tieu-chi label {
+  font-size: 14px;
+  color: var(--muc);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   KHUNG UPLOAD FILE MINH CHỨNG
+   ========================================================================== */
+.khung-upload-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.the-upload {
+  background: #ffffff;
+  border: 1.5px dashed var(--vien-o);
+  border-radius: var(--bo);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+
+.the-upload:hover {
+  border-color: var(--xanh);
+}
+
+.the-upload.da-chon-file {
+  border-style: solid;
+  border-color: var(--la);
+  background: var(--la-nhat);
+}
+
+.the-upload__bieutong {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--bo);
+  background: var(--xanh-nhat);
+  color: var(--xanh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex: none;
+}
+
+.the-upload.da-chon-file .the-upload__bieutong {
+  background: var(--la-vien);
+  color: var(--la-dam);
+}
+
+.the-upload__thongtin {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.the-upload__ten {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muc);
+}
+
+.the-upload__gioihan {
+  font-size: 12.5px;
+  color: var(--chu-thich);
+}
+
+.the-upload__trangthai {
+  display: none;
+  font-size: 13px;
+  color: var(--la-chu);
+  font-weight: 600;
+  align-items: center;
+  gap: 8px;
+}
+
+.the-upload.da-chon-file .the-upload__trangthai {
+  display: flex;
+}
+
+.the-upload.da-chon-file .the-upload__nut-wrapper {
+  display: none;
+}
+
+.nut-go-file {
+  background: none;
+  border: none;
+  color: var(--loi);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.the-upload__nut-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.the-upload__input-file {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.thanh-tien-trinh-upload {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 4px;
+  background: var(--vien);
+  display: none;
+}
+
+.ruot-tien-trinh-upload {
+  height: 100%;
+  width: 0%;
+  background: var(--cam-vach);
+  transition: width .2s linear;
+}
+
+/* ==========================================================================
+   THÔNG BÁO (NOTICE BOXES - DUE STYLE)
+   ========================================================================== */
+.hop {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-radius: var(--bo);
+  padding: 13px 15px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.hop__dau {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--pill);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.hop--loi {
+  background: var(--loi-nhat);
+  color: var(--loi-chu);
+  border: 1px solid #F5C6CB;
+}
+
+.hop--loi .hop__dau {
+  background: var(--loi);
+}
+
+.hop--xanh {
+  background: var(--xanh-nhat);
+  border: 1px solid var(--xanh-vien);
+  color: #2C5E85;
+}
+
+.hop--xanh .hop__dau {
+  background: var(--xanh);
+}
+
+.hop--la {
+  background: var(--la-nhat);
+  border: 1px solid var(--la-vien);
+  color: var(--la-chu);
+}
+
+.hop--la .hop__dau {
+  background: var(--la);
+}
+
+.hop--cam {
+  background: var(--cam-nhat);
+  border: 1px solid #F5D5C2;
+  color: #7C2D12;
+}
+
+.hop--cam .hop__dau {
+  background: var(--cam);
+}
+
+/* ==========================================================================
+   NÚT BẤM (BUTTONS - DUE STYLE)
+   ========================================================================== */
+.nut {
+  height: var(--nut-cao);
+  border-radius: var(--bo);
+  font-size: 15.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 24px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease;
+  width: 100%;
+}
+
+.nut--chinh {
+  background: var(--cam);
+  color: #ffffff;
+}
+
+.nut--chinh:hover {
+  background: var(--cam-dam);
+}
+
+.nut--chinh:disabled {
+  background: var(--tat);
+  color: var(--chu-tat);
+  cursor: not-allowed;
+}
+
+.nut--phu {
+  background: #ffffff;
+  color: var(--xanh);
+  border-color: var(--xanh-vien);
+}
+
+.nut--phu:hover {
+  background: var(--xanh-nhat);
+}
+
+.nut--chu {
+  background: none;
+  color: var(--xanh);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  height: 44px;
+}
+
+.nut--chu:hover {
+  color: var(--cam);
+}
+
+.nut--nho {
+  height: 38px;
+  font-size: 13.5px;
+  padding: 0 16px;
+  width: auto;
+}
+
+.hai-nut {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* ==========================================================================
+   MÀN HÌNH KẾT QUẢ & THÀNH CÔNG
+   ========================================================================== */
+.ket-qua {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.ket-qua__dau {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--la-nhat);
+  border: 2px solid var(--la-vien);
+  color: var(--la-dam);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ket-qua__dau svg {
+  width: 32px;
+  height: 32px;
+}
+
+.ket-qua__chi-tiet {
+  font-size: 14px;
+  color: var(--phu);
+  background: var(--nen);
+  border: 1px solid var(--vien);
+  border-radius: var(--bo);
+  padding: 16px;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   TRANG QUẢN TRỊ ADMIN (ADMIN DASHBOARD SPECIFIC)
+   ========================================================================== */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.the-thong-ke {
+  background: #ffffff;
+  border: 1px solid var(--vien);
+  border-radius: var(--bo);
+  padding: 18px;
+  text-align: center;
+  box-shadow: var(--bong-nhe);
+}
+
+.the-thong-ke__nhan {
+  color: var(--chu-thich);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.the-thong-ke__so {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 4px;
+  color: var(--xanh);
+}
+
+.tim-kiem-hang {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tim-kiem-input-wrapper {
+  flex: 1;
+  min-width: 240px;
+}
+
+.loc-select {
+  width: 200px;
+}
+
+@media (max-width: 640px) {
+  .loc-select {
+    width: 100%;
+  }
+}
+
+/* BẢNG DỮ LIỆU (TABLE STYLE - DUE) */
+.khung-bang {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--vien);
+  border-radius: var(--bo);
+  background: #ffffff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--vien);
+}
+
+th {
+  background: var(--nen);
+  font-weight: 600;
+  color: var(--phu);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+tr:hover td {
+  background: var(--xanh-nhat);
+}
+
+.nut-thao-tac {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid var(--xanh-vien);
+  color: var(--xanh);
+}
+
+.nut-thao-tac:hover {
+  background: var(--xanh);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   MODAL DIALOG (CHITIẾT HỒ SƠ)
+   ========================================================================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 33, 58, .6);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+.modal.mo {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal__the {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 760px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nut-dong-modal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--chu-thich);
+  cursor: pointer;
+}
+
+.nut-dong-modal:hover {
+  color: var(--muc);
+}
+
+.modal__tieude {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--vien);
+  padding-bottom: 12px;
+}
+
+.modal__muc {
+  margin-bottom: 20px;
+}
+
+.modal__muc-tieude {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: var(--xanh);
+}
+
+.bang-thong-tin-luoi {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .bang-thong-tin-luoi {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dong-thong-tin {
+  font-size: 13.5px;
+}
+
+.nhan-thong-tin {
+  color: var(--chu-thich);
+  font-weight: 500;
+}
+
+.giatri-thong-tin {
+  font-weight: 600;
+  color: var(--muc);
+}
+
+/* ==========================================================================
+   CHÂN TRANG (FOOTER)
+   ========================================================================== */
+.chan-trang {
+  font-size: 12.5px;
+  color: var(--mo);
+  text-align: center;
+  padding: 24px 0 16px;
+  margin-top: auto;
+}

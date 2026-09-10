@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản trị — Xét Học bổng Thạc sĩ DUE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+    <!-- Header DUE -->
+    <header class="dau-trang">
+        <div class="dau-trang__trong">
+            <div class="dau-trang__logo">
+                <img src="/static/assets/due-logo-khien.png" alt="DUE Logo">
+            </div>
+            <div class="dau-trang__tieu-de">
+                <div class="dau-trang__phu">Đại học Đà Nẵng</div>
+                <div class="dau-trang__ten">Trường Đại học Kinh tế — Trang Quản trị</div>
+            </div>
+            <button class="dau-trang__nut-phu" id="logoutBtn" style="display: none;">Đăng xuất</button>
+        </div>
+    </header>
+
+    <!-- Login Panel -->
+    <main class="noi-dung" id="loginPanel" style="max-width: 440px; margin-top: 40px;">
+        <div class="the" style="text-align: center;">
+            <div class="nhom" style="gap: 6px;">
+                <h1>Đăng nhập Quản trị</h1>
+                <p class="mo-ta">Nhập mật khẩu để truy cập danh sách quản lý hồ sơ</p>
+            </div>
+            <form id="loginForm" class="nhom" style="gap: 16px;" novalidate>
+                <div class="o">
+                    <label for="password">Mật khẩu xác thực <span class="bat-buoc">*</span></label>
+                    <input type="password" id="password" placeholder="Mật khẩu" required style="text-align: center; font-size: 18px; letter-spacing: 2px;">
+                </div>
+                <div class="hop hop--loi" id="loginError" style="display: none;">
+                    <span class="hop__dau">!</span>
+                    <span id="loginErrorMsg">Mật khẩu không hợp lệ</span>
+                </div>
+                <button type="submit" class="nut nut--chinh">Đăng nhập</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Main Dashboard -->
+    <main class="noi-dung" id="dashboardPanel" style="display: none; max-width: 960px;">
+        <!-- Stat Cards Grid -->
+        <div class="grid-3">
+            <div class="the-thong-ke">
+                <span class="the-thong-ke__nhan">Tổng số hồ sơ nộp</span>
+                <div class="the-thong-ke__so" id="statTotal" style="color: var(--xanh);">0</div>
+            </div>
+            <div class="the-thong-ke">
+                <span class="the-thong-ke__nhan">Học bổng Nhóm 1 (Tân Cử nhân)</span>
+                <div class="the-thong-ke__so" id="statGroup1" style="color: var(--cam);">0</div>
+            </div>
+            <div class="the-thong-ke">
+                <span class="the-thong-ke__nhan">Học bổng Nhóm 2 (Phát triển NCKH)</span>
+                <div class="the-thong-ke__so" id="statGroup2" style="color: var(--la);">0</div>
+            </div>
+        </div>
+
+        <div class="the">
+            <div class="admin-header">
+                <div>
+                    <h2>Danh sách Hồ sơ Đăng ký Xét học bổng</h2>
+                    <p class="mo-ta" style="font-size: 13.5px;">Quản lý, tra cứu thông tin và xuất dữ liệu</p>
+                </div>
+                <div class="admin-actions">
+                    <a href="/api/admin/export" class="nut nut--chinh nut--nho">Xuất file Excel</a>
+                    <a href="/api/admin/download-all" class="nut nut--phu nut--nho">Tải tất cả ZIP</a>
+                </div>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="tim-kiem-hang">
+                <div class="o tim-kiem-input-wrapper">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo Họ tên, CCCD, Lớp, Mã HV...">
+                </div>
+                <div class="o loc-select">
+                    <select id="filterGroup">
+                        <option value="">Tất cả Nhóm học bổng</option>
+                        <option value="Nhóm 1">Nhóm 1 (Tân cử nhân ĐHKT)</option>
+                        <option value="Nhóm 2">Nhóm 2 (Phát triển NCKH)</option>
+                    </select>
+                </div>
+                <div class="o loc-select">
+                    <select id="filterGrade">
+                        <option value="">Tất cả Loại tốt nghiệp</option>
+                        <option value="Xuất sắc">Xuất sắc</option>
+                        <option value="Giỏi">Giỏi</option>
+                        <option value="Khá">Khá</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="khung-bang">
+                <table id="submissionsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px; text-align: center;">STT</th>
+                            <th>Họ và tên</th>
+                            <th>Mã số HV</th>
+                            <th>Lớp</th>
+                            <th>Số CCCD</th>
+                            <th>Nhóm học bổng</th>
+                            <th>Loại tốt nghiệp</th>
+                            <th style="text-align: center;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissionsTableBody">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+                <div id="noDataMessage" style="display: none; text-align: center; padding: 32px; color: var(--chu-thich);">
+                    Không tìm thấy dữ liệu học viên phù hợp.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Student Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal__the">
+            <button type="button" class="nut-dong-modal" id="closeModalBtn">&times;</button>
+            <h2 class="modal__tieude" id="modalStudentName">Chi tiết hồ sơ học viên</h2>
+
+            <!-- Section 1 -->
+            <div class="modal__muc">
+                <div class="modal__muc-tieude">I. Thông tin cá nhân</div>
+                <div class="bang-thong-tin-luoi">
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Họ và tên:</span> <span class="giatri-thong-tin" id="dFullname"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Giới tính:</span> <span class="giatri-thong-tin" id="dGender"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Ngày sinh:</span> <span class="giatri-thong-tin" id="dDob"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Nơi sinh:</span> <span class="giatri-thong-tin" id="dPob"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Lớp học:</span> <span class="giatri-thong-tin" id="dClass"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Khóa tuyển:</span> <span class="giatri-thong-tin" id="dCohort"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Mã học viên:</span> <span class="giatri-thong-tin" id="dStudentId"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Số CCCD:</span> <span class="giatri-thong-tin" id="dCitizenId"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Điện thoại:</span> <span class="giatri-thong-tin" id="dPhone"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Email:</span> <span class="giatri-thong-tin" id="dEmail"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Trường tốt nghiệp:</span> <span class="giatri-thong-tin" id="dGradUni"></span></div>
+                    <div class="dong-thong-tin"><span class="nhan-thong-tin">Ngành tốt nghiệp:</span> <span class="giatri-thong-tin" id="dMajor"></span></div>
+                    <div class="dong-thong-tin" style="grid-column: span 2;"><span class="nhan-thong-tin">Xếp loại tốt nghiệp Đại học:</span> <span class="giatri-thong-tin" id="dGradGrade" style="color: var(--cam);"></span></div>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="modal__muc" style="border-top: 1px solid var(--vien); padding-top: 14px;">
+                <div class="modal__muc-tieude">II. Loại học bổng đăng ký xét, cấp</div>
+                <div class="hop hop--xanh">
+                    <div>
+                        <div style="font-weight: 700;" id="dSchGroup"></div>
+                        <div style="font-size: 13px; margin-top: 2px;" id="dSchOption"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="modal__muc" style="border-top: 1px solid var(--vien); padding-top: 14px;">
+                <div class="modal__muc-tieude">III. Tự đánh giá thành tích</div>
+                <div class="danh-sach-tieu-chi" id="dSelfEvalList">
+                    <!-- Dynamic evaluation items -->
+                </div>
+                <div style="margin-top: 12px;" class="o">
+                    <label>Ghi chú / Minh chứng bổ sung của học viên:</label>
+                    <div id="dNotes" style="font-size: 13.5px; background: var(--nen); padding: 10px 14px; border-radius: var(--bo); border: 1px solid var(--vien); white-space: pre-wrap;"></div>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="modal__muc" style="border-top: 1px solid var(--vien); padding-top: 14px;">
+                <div class="modal__muc-tieude">IV. Danh sách tài liệu minh chứng đính kèm</div>
+                <div class="grid-2" id="dFilesGrid" style="gap: 12px;">
+                    <!-- Dynamic file download buttons -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer DUE -->
+    <footer class="chan-trang">
+        <p>Phòng Công tác Sinh viên · Trường Đại học Kinh tế, Đại học Đà Nẵng</p>
+    </footer>
+
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>
